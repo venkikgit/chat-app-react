@@ -1,0 +1,31 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+.chats{
+    height: 84vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.chatsContainer{
+    border-bottom: 0.01px solid #222E35;
+    /* background: #222E35; */
+    height: 12vh;
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    /* justify-content: center; */
+    align-items: center;
+    color:white;
+    gap: 10px;
+    cursor: pointer;
+    margin-bottom: 1px;
+   
+}
+
+.chatsContainer:hover{
+    /* background: #182229 ; */
+    background: #222E35;
+}
+
+

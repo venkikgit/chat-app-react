@@ -1,0 +1,9 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@300&display=swap');
+
+
+.sidePanel{
+    background-color: #182229;
+    border-right: 0.01px solid grey;
+    height: 100vh;
+    width: 30vw;
+}
