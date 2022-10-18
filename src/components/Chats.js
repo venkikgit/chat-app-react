@@ -1,20 +1,40 @@
-import React from 'react'
+import { doc, onSnapshot } from 'firebase/firestore';
+import React, { useContext, useEffect, useState } from 'react'
+import { AuthContext } from '../context/AuthContext';
+import { ChatContext} from '../context/ChatContext';
+import { db } from '../firebase';
 import styles from '../styles/Chats.module.css'
 const Chats = () => {
+  const [chats,setChats] = useState([]);
+
+  const { currentUser } = useContext(AuthContext);
+  const { dispatch } = useContext(ChatContext);
+  useEffect(()=>{
+    const getChats = ()=>{
+        const unsub = onSnapshot(doc(db,"userChats",currentUser.uid),(doc)=>{
+            setChats(doc.data());
+        })
+        return ()=>{
+            unsub();
+        }
+    }
+    currentUser.uid && getChats();
+},[currentUser.uid]);
+// console.log(Object.entries(chats))
+const handleSelect = (u) => {
+    dispatch({ type:'CHANGE_USER',payload:u})
+}
   return (
-    <div className={styles.chats}>
-        <div className={styles.chatsContainer}>
-            <img style={{height: "40px",width: "40px"}} src="https://cdn-icons-png.flaticon.com/512/236/236831.png" alt="" />
+      <div className={styles.chats}>
+        {Object.entries(chats)?.sort((a,b)=>b[1].date-a[1].date).map((chat)=>(
+            <div className={styles.chatsContainer} key={chat[0]} onClick={()=>handleSelect(chat[1].userInfo)}>
+            <img style={{height: "40px",width: "40px",borderRadius:"50%"}} src={chat[1].userInfo.photoURL} alt="" />
             <div className="chatInfo">
-                <span> Venki</span>
+                <span> {chat[1].userInfo.displayName}</span>
+                <p>{chat[1].lastMessage?.text}</p>
             </div>
         </div>
-        <div className={styles.chatsContainer}>
-            <img style={{height: "40px",width: "40px"}} src="https://cdn-icons-png.flaticon.com/512/236/236831.png" alt="" />
-            <div className="chatInfo">
-                <span> Venki</span>
-            </div>
-        </div>
+            ))};
     </div>
   )
 }
